@@ -1,0 +1,43 @@
+<snippet>
+	<content><![CDATA[
+VVI w;
+int MR[lim], MC[lim], seen[lim], R, C;
+
+int FindMatch(int src)
+{
+    REP(j, 0, (SZ(w[src]) - 1))
+    {
+        if (!seen[w[src][j]])
+        {
+            seen[w[src][j]] = 1;
+            if (MC[w[src][j]] < 0 or FindMatch(MC[w[src][j]]))
+            {
+                MR[src] = w[src][j];
+                MC[w[src][j]] = src;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int BipartiteMatching()
+{
+    int ct = 0;
+    mem(MR, -1);
+    mem(MC, -1);
+    REP(i, 1, R)
+    {
+        mem(seen, 0);
+        if (FindMatch(i)) ct++;
+    }
+    return ct;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>MBPM</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>

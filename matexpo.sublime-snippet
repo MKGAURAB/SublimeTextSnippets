@@ -1,0 +1,41 @@
+<snippet>
+	<content><![CDATA[
+/* Matrix Exponentiation */
+struct matrix
+{
+    Long x[27][27];
+};
+matrix base, zero;
+matrix matmult(matrix &a, matrix &b, int dim)
+{
+    matrix ret;
+    int i, j, k;
+    for(i=1; i<=dim; i++)
+        for(j=1; j<=dim; j++)
+        {
+            ret.x[i][j] = 0.0;
+            for(k=1; k<=dim; k++) ret.x[i][j] = (ret.x[i][j] + (a.x[i][k]*b.x[k][j])%MOD)%MOD;
+        }
+    return ret;
+}
+matrix bigmod(matrix b, Long p, int dim)
+{
+    matrix xx = zero;
+    int i;
+    for(i=1; i<=dim; i++) xx.x[i][i] = 1.0;
+    matrix power = b;
+    while(p)
+    {
+        if((p&1)==1) xx = matmult(xx,power,dim);
+        power = matmult(power,power,dim);
+        p /= 2;
+    }
+    return xx;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>matexpo</tabTrigger>
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
