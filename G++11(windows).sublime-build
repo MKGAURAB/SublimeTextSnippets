@@ -1,0 +1,11 @@
+{
+  "cmd": ["g++","-Wl,--stack,268435456","-Wall","-O2","-std=c++11", "$file", "-o", "$file_base_name.exe"],
+  "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+  "working_dir": "${project_path:$folder}",
+  "selector": "source.cpp",
+  "shell": true,
+  "variants": [{
+    "name": "Run",
+    "cmd": ["start","cmd","/K", "$file_base_name.exe"]
+  }]
+}

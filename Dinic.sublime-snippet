@@ -1,0 +1,75 @@
+<snippet>
+	<content><![CDATA[
+const int DinicN = 205;
+const int DinicM = 100005;
+const int oo = 1000000000;
+struct Dinic {
+	int n, S, T, m;
+	int head[DinicN], point[DinicM], L[DinicN], work[DinicN], next[DinicM];
+	Long dis[DinicN], flow[DinicM], capa[DinicM];
+
+	void init(int _n, int _S, int _T)
+	{
+		n = _n, S = _S, T = _T, m = 0;
+		mem(point, -1);
+		REP(i, 0, (n - 1)) head[i] = -1;
+	}
+
+	void AddEdge(int u, int v, Long C1, Long C2)
+	{
+		point[m] = v; capa[m] = C1; flow[m] = 0; next[m] = head[u]; head[u] = m++;
+		point[m] = u; capa[m] = C2; flow[m] = 0; next[m] = head[v]; head[v] = m++;
+	}
+
+	bool BFS()
+	{
+		mem(dis, -1);
+		int w = 0; L[w++] = S; dis[S] = 0;
+		REP(r, 0, (w - 1))
+		{
+			for (int x = L[r], i = head[x]; ~i; i = next[i])
+			{
+				if (flow[i] < capa[i] and dis[point[i]] < 0)
+				{
+					dis[point[i]] = dis[x] + 1;
+					L[w++] = point[i];
+				}
+			}
+		}
+		return dis[T] >= 0;
+	}
+
+	Long DFS(int x, Long exp)
+	{
+		if (x == T or exp == 0) return exp;
+		for (int &i = work[x]; ~i; i = next[i])
+		{
+			int v = point[i];
+			Long tmp;
+			if ((flow[i] < capa[i]) && (dis[v] == dis[x] + 1) && (tmp = DFS(v, min(exp, capa[i] - flow[i]))))
+			{
+				flow[i] += tmp; flow[i ^ 1] -= tmp; return tmp;
+			}
+		}
+		return 0;
+	}
+
+	Long calc()
+	{
+		Long re = 0, t;
+		while (BFS())
+		{
+			REP(i, 0, (n - 1)) work[i] = head[i];
+			while ((t = DFS(S, oo)) > 0) re += t;
+		}
+		return re;
+	}
+} sol;
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Dinic</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.c</scope>
+	<scope>source.c</scope>
+</snippet>
