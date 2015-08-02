@@ -1,0 +1,32 @@
+<snippet>
+	<content><![CDATA[
+char str[lim], s[lim];
+int p[lim];
+
+int n;
+
+void Manacher()
+{
+	n = strlen(s);
+	str[0] = '$';
+	str[1] = '#';
+	REP(i, 0, (n - 1)) str[2 * i + 2] = s[i], str[2 * i + 3] = '#';
+	n = (n * 2) + 2;
+	str[n] = 0;
+	int mx = 0, id;
+	REP(i, 1, (n - 1))
+	{
+		if (mx > i) p[i] = min(p[2 * id - i], mx - i);
+		else p[i] = 1;
+		for (; str[i + p[i]] == str[i - p[i]]; p[i]++);
+		if (p[i] + i > mx) mx = p[i] + i, id = i;
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Manacher</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
