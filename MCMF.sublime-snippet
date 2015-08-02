@@ -1,0 +1,66 @@
+<snippet>
+	<content><![CDATA[
+int idx, head[lim], nextt[tlim], ptr[tlim], prevv[lim];
+Long cost[tlim], flow[tlim], dist[lim];
+bool color[lim];
+queue<int> Q;
+
+void flow_init() {
+	idx = 0;
+	mem(head, -1);
+	mem(color, false);
+}
+
+void AddEdge(int u, int v, Long cap, Long ccost) {
+	ptr[idx] = v; nextt[idx] = head[u]; cost[idx] = ccost; flow[idx] = cap; head[u] = idx++;
+	ptr[idx] = u; nextt[idx] = head[v]; cost[idx] = -ccost; flow[idx] = 0; head[v] = idx++;
+}
+
+bool Dijkstra(int src, int des) {
+	REP(i, 0, des) {
+		dist[i] = INF, prevv[i] = -1;
+	}
+	dist[src] = 0;
+	Q.push(src);
+	while (!Q.empty()) {
+		int u = Q.front();
+		color[u] = false;
+		Q.pop();
+		for (int i = head[u]; ~i; i = nextt[i]) {
+			if (flow[i] and dist[ptr[i]] > dist[u] + cost[i]) {
+				dist[ptr[i]] = dist[u] + cost[i];
+				prevv[ptr[i]] = i;
+				if (!color[ptr[i]]) {
+					Q.push(ptr[i]);
+					color[ptr[i]] = true;
+				}
+			}
+		}
+	}
+	return dist[des] != INF;
+}
+
+pair<Long, Long> MCMF(int source, int sink) {
+	Long totflow = 0, totcost = 0;
+	while (Dijkstra(source, sink)) {
+		Long amt = INF;
+		for (int i = prevv[sink]; ~i; i = prevv[ptr[i ^ 1]]) {
+			amt = min(amt, flow[i]);
+		}
+		for (int i = prevv[sink]; ~i; i = prevv[ptr[i ^ 1]]) {
+			flow[i] -= amt;
+			flow[i ^ 1] += amt;
+		}
+		totflow += amt;
+		totcost += (amt * dist[sink]);
+	}
+	return mp(totflow, totcost);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>MCMF</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>

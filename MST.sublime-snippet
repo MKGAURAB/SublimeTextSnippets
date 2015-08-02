@@ -1,0 +1,50 @@
+<snippet>
+	<content><![CDATA[
+		struct DATA {
+	int x, y, c;
+	DATA(int a, int b, int r) {
+		x = a, y = b, c = r;
+	}
+};
+int ID[lim], N, M;
+vector<DATA> INPUT;
+string str[lim];
+bool comp(const DATA A, const DATA B) {
+	return A.c < B.c;
+}
+
+int sfind(int p) {
+	return ID[p] == p ? p : (ID[p] = sfind(ID[p]));
+}
+
+bool connected(int p, int q) {
+	return sfind(p) == sfind(q);
+}
+
+void UnionSet(int p, int q) {
+	ID[sfind(p)] = sfind(q);
+}
+
+int MST() {
+	int MAXX = -INF;
+	sortc(INPUT, comp);
+	REP(i, 0, N) ID[i] = i;
+	int k = SZ(INPUT);
+	REP(i, 0, (k - 1)) {
+		if (N == 1) break;
+		if (!connected(INPUT[i].x, INPUT[i].y)) {
+			UnionSet(INPUT[i].x, INPUT[i].y);
+			N--;
+			MAXX = max(MAXX, INPUT[i].c);
+		}
+	}
+	return MAXX;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>MST</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
