@@ -1,0 +1,35 @@
+<snippet>
+	<content><![CDATA[
+struct BIT {
+
+	int High;
+	VL tree;
+	BIT(int n) {
+		High  = n + 7;
+		tree.resize((High), 0);
+	}
+
+	Long GetSum(int x) {
+		Long ret = 0;
+		while (x) {
+			ret += tree[x];
+			x -= (x & -x);
+		}
+		return ret;
+	}
+
+	void SetVal(int x, int val) {
+		while (x <= High) {
+			tree[x] += val;
+			x += (x & -x);
+		}
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>BIT</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
