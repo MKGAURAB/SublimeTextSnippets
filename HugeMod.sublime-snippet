@@ -1,0 +1,71 @@
+<snippet>
+	<content><![CDATA[
+Long A[2], modval;
+int N;
+
+Long bigmul ( Long a, Long b, Long c )
+{
+	if ( b == 0 ) return 0;
+	if ( b & 1 ) {
+		return ( a + bigmul ( a, b - 1, c ) ) % c;
+	} else {
+		return ( 2 * bigmul ( a, b / 2, c ) ) % c;
+	}
+}
+
+Long bigmod ( Long a, Long p, Long m )
+{
+	Long res = 1, x = a % m;
+
+	while ( p ) {
+		if ( p & 1 ) res = bigmul ( res, x, m );
+		x = bigmul ( x, x, m );
+		p >>= 1;
+	}
+
+	return res;
+}
+
+Long euler_phi(Long x)
+{
+	Long ret = 1, i, pow;
+	for (i = 2; x != 1; i++) {
+		pow = 1;
+		if (i > sqrt(x))break;
+		while (!(x % i)) {
+			x /= i;
+			pow *= i;
+		}
+		ret *= (pow - (pow / i));
+	}
+	if (x != 1) ret *= (x - 1);
+	return ret;
+}
+
+Long solve (int d, Long mod)
+{
+	if (d == (N - 1)) {
+		if (A[d] > mod) return (A[d] % mod) + mod;
+		else return A[d];
+	}
+
+	Long phi = euler_phi(mod);
+	Long pown = (solve (d + 1, phi));
+	Long num = pown;
+	Long mul = 1, c = A[d];
+	while (num && mul <= mod && c <= mod) {
+		if (num & 1)   mul *= c;
+		c *= c;
+		num >>= 1;
+	}
+	if (num && (mul > mod || c > mod))   return bigmod(A[d], pown, mod) + mod;
+	else    return mul;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>HugeMod</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
