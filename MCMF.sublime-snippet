@@ -47,12 +47,12 @@ pair<Long, Long> MCMF(int source, int sink) {
 		for (int i = prevv[sink]; ~i; i = prevv[ptr[i ^ 1]]) {
 			amt = min(amt, flow[i]);
 		}
+		totflow += amt;
+		totcost += (amt * dist[sink]);
 		for (int i = prevv[sink]; ~i; i = prevv[ptr[i ^ 1]]) {
 			flow[i] -= amt;
 			flow[i ^ 1] += amt;
 		}
-		totflow += amt;
-		totcost += (amt * dist[sink]);
 	}
 	return mp(totflow, totcost);
 }
