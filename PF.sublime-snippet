@@ -1,0 +1,56 @@
+<snippet>
+	<content><![CDATA[
+const int MAX = 1000005;
+
+bool sieve[MAX];
+int prime[MAX];
+int nfp, dp, DP[100], PW[100];
+
+void SOE() {
+	int k = 0, r;
+	prime[k++] = 2;
+	sieve[0] = sieve[1] = true;
+	REPI(i, 3, (MAX - 3), 2) {
+		if (sieve[i] == false) {
+			prime[k++] = i;
+			if (i < (MAX / i)) {
+				r = (i << 1);
+				REPI(j, (i * i), (MAX - 3), r) {
+					sieve[j] = true;
+				}
+			}
+		}
+	}
+	nfp = k;
+	return ;
+}
+
+
+void prime_factorise(int num) {
+	dp = 0;
+	mem(DP, 0);
+	mem(PW, 0);
+	for (int i = 0; prime[i]*prime[i] <= num; i++) {
+		if (num % prime[i] == 0) {
+			DP[dp] = prime[i];
+			for (; num % prime[i] == 0; num /= prime[i]) {
+				PW[dp]++;
+			}
+			dp++;
+		}
+	}
+	if (num != 1) {
+		DP[dp] = num;
+		PW[dp] = 1;
+		dp++;
+	}
+	return;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>PF</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
