@@ -1,0 +1,40 @@
+<snippet>
+	<content><![CDATA[
+typedef long long Long;
+typedef double DD;
+typedef vector<int> VI;
+typedef vector<VI > VVI;
+typedef pair<int,int> PII;
+typedef pair<Long, Long> PLL;
+typedef vector<PII> VPII;
+typedef vector<PLL> VPLL;
+
+const int INF = 2000000000;
+const int MOD = 1000000007;
+
+#define mem(a,b)          memset(a,b,sizeof(a))
+#define REP(i,a,b)        for(int i=a; i<=b; ++i)
+#define REPI(i,a,b,c)     for(int i=a; i<=b; i+=c)
+#define REPR(i,a,b)       for(int i=b; i>=a; --i)
+#define REPRD(i,a,b,c)    for(int i=b; i>=a; i-=c)
+#define REPB(i,a)         for(int i=a; ;i++)
+#define REPRB(i,a)        for(int i=a; ; i--)
+#define mp(a,b)   make_pair(a,b)
+#define fs        first
+#define sc        second
+#define SZ(s)     ((int)s.size())
+#define unq(vec)  stable_sort(vec.begin(),vec.end());\
+                  vec.resize(distance(vec.begin(),unique(vec.begin(),vec.end())));
+#define BE(a)     a.begin(),a.end()
+#define rev(a)    reverse(BE(a))
+#define sorta(a)  stable_sort(BE(a))
+#define sortc(a, comp)  sort(BE(a),comp)
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>toptemp</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
