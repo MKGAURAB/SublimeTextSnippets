@@ -1,12 +1,14 @@
 <snippet>
 	<content><![CDATA[
+#include <cstring>
 typedef long long Long;
 typedef double DD;
 typedef vector<int> VI;
 typedef vector<VI > VVI;
-typedef pair<int,int> PII;
+typedef pair<int, int> PII;
 typedef pair<Long, Long> PLL;
 typedef vector<PII> VPII;
+typedef vector<string> VS;
 typedef vector<PLL> VPLL;
 
 const int INF = 2000000000;
@@ -29,7 +31,6 @@ const int MOD = 1000000007;
 #define rev(a)    reverse(BE(a))
 #define sorta(a)  stable_sort(BE(a))
 #define sortc(a, comp)  sort(BE(a),comp)
-
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>toptemp</tabTrigger> -->
