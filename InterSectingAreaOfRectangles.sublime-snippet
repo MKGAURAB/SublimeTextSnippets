@@ -1,0 +1,193 @@
+<snippet>
+	<content><![CDATA[
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <cstring>
+#include <cstdlib>
+#include <numeric>
+#include <utility>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long Long;
+typedef double DD;
+typedef vector<int> VI;
+typedef vector<VI > VVI;
+typedef pair<int, int> PII;
+typedef pair<Long, Long> PLL;
+typedef vector<PII> VPII;
+typedef vector<PLL> VPLL;
+
+const int INF = 1000000000;
+const int MOD = 1000000007;
+
+#define sf scanf
+#define pf printf
+#define mem(a,b)          memset(a,b,sizeof(a))
+#define pb push_back
+#define REP(i,a,b)        for(int i=a; i<=b; ++i)
+#define REPI(i,a,b,c)     for(int i=a; i<=b; i+=c)
+#define REPR(i,a,b)       for(int i=b; i>=a; --i)
+#define REPRD(i,a,b,c)    for(int i=b; i>=a; i-=c)
+#define REPB(i,a)         for(int i=a; ;i++)
+#define REPRB(i,a)        for(int i=a; ; i--)
+#define mp(a,b)   make_pair(a,b)
+#define fs        first
+#define sc        second
+#define SZ(s)     ((int)s.size())
+#define PI        3.141592653589793
+#define VS        vector<string>
+#define VI        vector<int>
+#define VD        vector<DD>
+#define VL        vector<Long>
+#define VVL       vector<VL >
+#define lim       1000007
+#define tlim      (1<<((int)ceil(log2(lim))+1))
+#define unq(vec)  stable_sort(vec.begin(),vec.end());\
+                  vec.resize(distance(vec.begin(),unique(vec.begin(),vec.end())));
+#define BE(a)     a.begin(),a.end()
+#define rev(a)    reverse(BE(a))
+#define sorta(a)  stable_sort(BE(a))
+#define sortc(a, comp)  sort(BE(a),comp)
+
+//int X[]={1,1,2,2,-1,-1,-2,-2},Y[]={2,-2,1,-1,2,-2,1,-1};//knight move
+//int X[]={0,-1,-1,-1,0,1,1,1},Y[]={-1,-1,0,1,1,1,0,-1};//8 move
+//int X[]={-1,0,1,0},Y[]={0,1,0,-1};//4 move
+
+#define L(x) (x<<1)
+#define R(x) (x<<1 | 1)
+#define MID(l,r) ((l+r)>>1)
+
+int z[10], y[4 * lim], cnty, cntz, cnt;
+
+struct point {
+	int x, y, z;
+	point() {}
+	point(int xx, int yy, int zz): x(xx), y(yy), z(zz) {}
+};
+struct Tnode {
+	int l, r, cover, slen;
+	int len() { return r - l;}
+	int mid() { return MID(l, r);}
+	bool in(int ll, int rr) { return l >= ll && r <= rr; }
+	void lr(int ll, int rr) { l = ll; r = rr;}
+};
+struct box {
+	point a, b;
+};
+struct Sline {int x, y1, y2, flag;};
+
+Tnode node[(lim * 4)];
+box bo[lim * 4];
+Sline Li[lim * 4];
+
+void add_line(int x1, int y1, int x2, int y2, int &cnt) {
+	Li[cnt].x = x1; Li[cnt].y1 = y1; Li[cnt].y2 = y2;
+	Li[cnt++].flag = 1;
+	Li[cnt].x = x2; Li[cnt].y1 = y1; Li[cnt].y2 = y2;
+	Li[cnt++].flag = -1;
+}
+
+bool comp(Sline a, Sline b) {
+	if ( a.x == b.x )
+		return a.flag > b.flag;
+	return a.x < b.x;
+}
+
+void build_tree(int t, int l, int r) {
+	node[t].lr(l, r);
+	node[t].cover = node[t].slen = 0;
+	if ( node[t].l == node[t].r - 1 )
+		return ;
+	int mid = MID(l, r);
+	build_tree(L(t), l, mid);
+	build_tree(R(t), mid, r);
+}
+void push_down(int t) {
+	if ( node[t].cover >= 1)
+		node[t].slen = y[node[t].r] - y[node[t].l];
+	else {
+		if ( node[t].len() == 1 )
+			node[t].slen = 0;
+		else
+			node[t].slen = node[L(t)].slen + node[R(t)].slen;
+	}
+}
+void update_tree(int t, Sline p) {
+	if ( y[node[t].l] >= p.y1 && y[node[t].r] <= p.y2 ) {
+		node[t].cover += p.flag;
+		push_down(t);
+		return ;
+	}
+	if ( node[t].len() == 1 ) return ;
+	int mid = node[t].mid();
+	if ( p.y1 < y[mid] ) update_tree(L(t), p);
+	if ( p.y2 > y[mid] ) update_tree(R(t), p);
+	push_down(t);
+}
+
+Long solve(int n) {
+	sort(y, y + cnty);
+	sort(Li, Li + cnt , comp);
+	Long area = 0;
+	build_tree(1, 0, (cnty - 1));
+	update_tree(1, Li[0]);
+	REP(i, 1, (cnt - 1)) {
+		area += (node[1].slen) * 1LL * (Li[i].x - Li[i - 1].x);
+		update_tree(1, Li[i]);
+	}
+	return area;
+}
+
+int main(int argc, const char **argv) {
+	//ios::sync_with_stdio(false);
+	//freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
+	int N, x1, y1, x2, y2;
+	while (~sf("%d", &N)) {
+		cnty = cnt = 0;
+		Long tot = 0;
+		REP(i, 1, N) {
+			sf("%d %d %d %d", &x1, &y1, &x2, &y2);
+			x1 += INF;
+			x2 += INF;
+			y1 += INF;
+			y2 += INF;
+			tot = tot + (labs(x1 - x2) + 1) * (labs(y1 - y2) + 1);
+			if (x1 > x2) swap(x1, x2);
+			if (y1 > y2) swap(y1, y2);
+			x2++, y2++;
+			add_line(x1, y1, x2, y2, cnt);
+			y[cnty++] = y1;
+			y[cnty++] = y2;
+		}
+		Long Res = solve(N);
+		pf("%lld\n", Res);
+	}
+	//double st=clock(),en;
+	//en=clock();
+	//cerr<<(double)(en-st)/CLOCKS_PER_SEC<<endl;
+	return 0;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>InterSectingAreaOfRectangles</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
