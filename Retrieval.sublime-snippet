@@ -1,0 +1,107 @@
+<snippet>
+	<content><![CDATA[
+class TrieNode
+{
+public:
+  // Initialize your data structure here.
+  int words, prefixes_count;
+  bool isLeaf;
+  TrieNode *child[26];
+  TrieNode()
+  {
+    words = prefixes_count = isLeaf = 0;
+    for (int i = 0; i < 26; i++)
+      child[i] = NULL;
+  }
+};
+
+class Trie
+{
+public:
+  Trie() { root = new TrieNode(); }
+
+  // Inserts a word into the trie.
+  void insert(string word)
+  {
+    TrieNode *cur = root;
+    for (int i = 0; i < (int)word.size(); i++)
+    {
+      int id = word[i] - 'a';
+      if (cur->child[id] == NULL)
+        cur->child[id] = new TrieNode();
+      cur->child[id]->prefixes_count++;
+      cur = cur->child[id];
+    }
+    cur->words++;
+    cur->isLeaf = true;
+  }
+
+  // Returns if the word is in the trie.
+  bool search(string word)
+  {
+    TrieNode *cur = root;
+    for (int i = 0; i < (int)word.size(); i++)
+    {
+      int id = word[i] - 'a';
+      if (cur->child[id] == NULL)
+        return false;
+      cur = cur->child[id];
+    }
+    return cur->isLeaf;
+  }
+
+  // Returns number of occurances of the word in trie
+  int word_count(string word)
+  {
+    TrieNode *cur = root;
+    for (size_t i = 0; i < (int)word.size(); ++i)
+    {
+      int id = word[i] - 'a';
+      if (cur->child[id] == NULL)
+        return 0;
+      cur = cur->child[id];
+    }
+    return cur->words;
+  }
+
+  // Returns if there is any word in the trie
+  // that starts with the given prefix.
+  bool startsWith(string prefix)
+  {
+    TrieNode *cur = root;
+    for (int i = 0; i < (int)prefix.size(); i++)
+    {
+      int id = prefix[i] - 'a';
+      if (cur->child[id] == NULL)
+        return false;
+      cur = cur->child[id];
+    }
+    return cur->prefixes_count ? true : false;
+  }
+
+  // Returns the number of words in the trie
+  // that starts with the given prefix.
+  int startsWith_count(string prefix)
+  {
+    TrieNode *cur = root;
+    for (int i = 0; i < (int)prefix.size(); i++)
+    {
+      int id = prefix[i] - 'a';
+      if (cur->child[id] == NULL)
+        return false;
+      cur = cur->child[id];
+    }
+    return cur->prefixes_count;
+  }
+
+private:
+  TrieNode *root;
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Retrieval</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope> -->
+	<scope>source.cpp</scope> -->
+	<scope>source.c</scope> -->
+</snippet>
