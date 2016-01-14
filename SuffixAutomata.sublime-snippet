@@ -1,0 +1,44 @@
+<snippet>
+	<content><![CDATA[
+struct SA {
+	const int maxn = 30000;
+	map<char, int> to[30000];
+	int link[30000], len[30000];
+	int idx[30000];
+	int last = 0, sz = 1;
+
+	void add_letter(char c, int id)
+	{
+		int p = last;
+		last = sz++;
+		len[last] = len[p] + 1;
+		idx[last] = id;
+		for (; to[p][c] == 0; p = link[p])
+			to[p][c] = last;
+		if (to[p][c] == last)
+			return;
+		int q = to[p][c];
+		if (len[q] == len[p] + 1)
+		{
+			link[last] = q;
+			return;
+		}
+		int cl = sz++;
+		to[cl] = to[q];
+		link[cl] = link[q];
+		idx[cl] = idx[q];
+		len[cl] = len[p] + 1;
+		link[last] = link[q] = cl;
+		for (; to[p][c] == q; p = link[p])
+			to[p][c] = cl;
+	}
+
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>SuffixAutomata</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
