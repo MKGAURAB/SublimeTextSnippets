@@ -51,6 +51,10 @@ void sa_extend ( char c , int id)
 	}
 	last = cur ;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8326a66fe92818fccb56c5c378ab4dd0b20306bc
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>SuffixAutomata</tabTrigger>
