@@ -34,8 +34,8 @@ typedef vector<PLL> VPLL;
 
 const int INF = 2000000000;
 const int MOD = 1000000007;
-const Long L_MAX = 9223372036854775808;
-const int I_MAX = 2147483648;
+const Long L_MAX = 9223372036854775807;
+const int I_MAX = 2147483647;
 
 #define sf scanf
 #define pf printf
