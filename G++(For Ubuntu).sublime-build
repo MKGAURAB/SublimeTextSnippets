@@ -8,7 +8,7 @@
         {
             "name": "Run",
             "shell": true,
-            "cmd": ["gnome-terminal -e 'bash -c \"${file_path}/${file_base_name};echo;echo;  echo Press ENTER to continue; read line;exit; exec bash\"'"]
+            "cmd": ["gnome-terminal -e 'bash -c \" ./${file_base_name};echo;echo;  echo Press ENTER to continue; read line;exit; exec bash\"'"]
         }
     ]    
 }

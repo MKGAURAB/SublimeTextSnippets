@@ -1,0 +1,15 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"C++ Snippets",
+		"C++11",
+		"Compare Side-By-Side",
+		"FileHeader",
+		"Package Control",
+		"SublimeAStyleFormatter"
+	]
+}
