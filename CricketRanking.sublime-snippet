@@ -1,0 +1,80 @@
+<snippet>
+	<content><![CDATA[
+Long n, s;
+Long v[15], fact[15];
+
+Long BigMod(Long a, Long k)
+{
+    Long res = 1;
+    while(k)
+    {
+        if(k&1)
+        {
+            res *= a;
+            if(res >= MOD) res %= MOD;
+        }
+        a *= a;
+        if(a >= MOD) a %= MOD;
+        k >>= 1;
+    }
+    return res;
+}
+
+Long nCr(Long a, Long b)
+{
+    if(a < b) return 0;
+    if(b > a-b) b = a-b;
+    Long up = 1, down = 1;
+    for(Long i = 0; i < b; ++i)
+    {
+        up *= (a-i);
+        if(up >= MOD) up %= MOD;
+        down *= (i+1);
+        if(down >= MOD) down %= MOD;
+    }
+    return up*BigMod(down, MOD-2)%MOD;
+}
+
+Long Lucas(Long a, Long b)
+{
+    Long res = 1;
+    while(b)
+    {
+        res *= nCr(a%MOD, b%MOD);
+        if(res >= MOD) res %= MOD;
+        a/= MOD, b /= MOD;
+    }
+    return res;
+}
+
+Long solve()
+{
+    Long ans = 0;
+    Long mx = 1<<n;
+    for(int i = 0; i < mx; ++i)
+    {
+        int flag = 1;
+        Long tmp = s;
+        for(int j = 0; j < n; ++j)
+        {
+            if(i&(1<<j))
+            {
+                tmp -= v[j]+1;
+                flag = -flag;
+            }
+        }
+        if(tmp < 0) continue;
+        ans += flag*(Lucas(tmp+n-1,n-1);
+        if(ans < 0) ans += MOD;
+        else if(ans >= MOD) ans %= MOD;
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>CrickRank</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.c++</scope>
+	<scope>source.cpp</scope>
+	<scope>source.c</scope>
+</snippet>
